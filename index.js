@@ -1,49 +1,58 @@
-/* un usuario elige su zona para calcular su envio */
+// productos de la tienda 
 
-
-class Provincia {
-    constructor(nombre, zona, codigopostal) {
+class producto {
+    constructor(id, nombre, precio) {
+        this.id = id
         this.nombre = nombre
-        this.zona = zona
-        this.codigopostal = codigopostal
+        this.precio = precio
 
-    }
-
-}
-const mendoza = new Provincia("mendoza", 'maipu', 5515)
-const cordoba = new Provincia("cordoba", 'centro', 5000)
-const sanLuis = new Provincia("sanLuis", 'laPunta', 5710)
-const buenosAires = new Provincia("buenosAires", 'laPlata', 1900)
-
-/* console.log(mendoza,cordoba,sanluis,buenoaires); */
-
-let provinciaDeseada = parseInt( prompt('Escoge el numero de tu pronvicia. 1.Mendoza - 2.Cordoba - 3.San Luis - 4.Buenos Aires'))
-
-let escogioProvincia = false
-let infoprovinciaDeseada 
-
- 
-while (escogioProvincia === false) {
-    if (provinciaDeseada === 1) {
-        escogioProvincia = true
-        infoprovinciaDeseada = mendoza
-    } else if (provinciaDeseada === 2) {
-        escogioProvincia = true
-        infoprovinciaDeseada = cordoba
-    } else if (provinciaDeseada === 3) {
-        escogioProvincia = true
-        infoprovinciaDeseada = sanLuis
-    } else if (provinciaDeseada === 4) {
-        escogioProvincia = true
-        infoprovinciaDeseada = buenosAires
-    } else { 
-        provinciaDeseada = parseInt( prompt('Escoge un numero CORRECTO. 1.Mendoza - 2.Cordoba - 3.San Luis - 4.Buenos Aires'))
     }
 }
 
+const funkoPop = new producto(1, 'funkoPop', 700)
+const remera = new producto(2, 'remera', 1000)
+const pantalon = new producto(3, 'pantalon', 2000)
+const delantal = new producto(4, 'delantal', 1500)
+const medias = new producto(5, 'medias', 500)
+const decoHogar = new producto(6, 'decoHogar', 3500)
+
+const productos = { funkoPop, remera, pantalon, delantal, medias, decoHogar }
+console.log(productos)
+
+let productoEscogido = prompt('¿que producto deseas comprar? : funkoPop, remera, pantalon, delantal, medias, decoHogar')
+
+let seguirComprando = true
+const carrito = {}
+
+while (seguirComprando === true) {
+    const producto = productos.find(
+        (producto) => producto.nombre === productoEscogido.toLowerCase().trim()
+    )
 
 
-alert (`El costo de envio de la provincia seleccionada ${infoprovinciaDeseada.nombre} es de: 500` )
+    if (producto) {
+        carrito.push(producto)
+    } else {
+        productoEscogido = prompt(
+            'Por favor, elegir correctamente: funkoPop, remera, pantalon, delantal, medias, decoHogar'
+        )
+        continue
+    }
 
+    const decision = prompt(' ¿Seguimos comprando? si - no ')
 
-console.log ( 'infoprovincia', infoprovinciaDeseada )
+    if (decision === 'si') {
+        productoEscogido = prompt('¿que producto deseas comprar? : funkoPop, remera, pantalon, delantal, medias, decoHogar')
+    } else {
+        Seguimoscomprando = false
+    }
+
+}
+
+console.log(carrrito);
+let totalCompra = 0
+
+carrito.forEach(producto => {
+    totalCompra = totalCompra + producto.precio
+})
+alert('el total de la compra es : ' + totalCompra)
