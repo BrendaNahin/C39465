@@ -1,58 +1,28 @@
-// productos de la tienda 
+const formulario = document.getElementById ('formulario')
+const inputnombre = document.getElementById ('nombre')
+const inputapellido = document.getElementById ('apellido')
+const titulo = document.getElementById ('titulo')
 
-class producto {
-    constructor(id, nombre, precio) {
-        this.id = id
-        this.nombre = nombre
-        this.precio = precio
 
-    }
+
+formulario.onsubmit = (e)=> {
+    e.preventDefault ()
+
+    const infoUsuario =  {
+    nombre:inputnombre.value,
+    apellido:inputapellido.value
 }
 
-const funkoPop = new producto(1, 'funkoPop', 700)
-const remera = new producto(2, 'remera', 1000)
-const pantalon = new producto(3, 'pantalon', 2000)
-const delantal = new producto(4, 'delantal', 1500)
-const medias = new producto(5, 'medias', 500)
-const decoHogar = new producto(6, 'decoHogar', 3500)
-
-const productos = { funkoPop, remera, pantalon, delantal, medias, decoHogar }
-console.log(productos)
-
-let productoEscogido = prompt('¿que producto deseas comprar? : funkoPop, remera, pantalon, delantal, medias, decoHogar')
-
-let seguirComprando = true
-const carrito = {}
-
-while (seguirComprando === true) {
-    const producto = productos.find(
-        (producto) => producto.nombre === productoEscogido.toLowerCase().trim()
-    )
-
-
-    if (producto) {
-        carrito.push(producto)
-    } else {
-        productoEscogido = prompt(
-            'Por favor, elegir correctamente: funkoPop, remera, pantalon, delantal, medias, decoHogar'
-        )
-        continue
-    }
-
-    const decision = prompt(' ¿Seguimos comprando? si - no ')
-
-    if (decision === 'si') {
-        productoEscogido = prompt('¿que producto deseas comprar? : funkoPop, remera, pantalon, delantal, medias, decoHogar')
-    } else {
-        Seguimoscomprando = false
-    }
-
+localStorage.setItem ('infoUsuario',JSON.stringify (infoUsuario))
+formulario.remove ()
+titulo.innerText = `Bienvenido ${infoUsuario.nombre} ${infoUsuario.apellido}`
 }
 
-console.log(carrrito);
-let totalCompra = 0
+const infoUsuario = localStorage.getItem ('infoUsuario')
+const infoUsuarioJS = JSON.parse(infoUsuario)
+if (infoUsuario) {
+    formulario.remove ()
+    titulo.innerText = `Bienvenido ${ infoUsuarioJS.nombre} ${ infoUsuarioJS.apellido}`
+}
 
-carrito.forEach(producto => {
-    totalCompra = totalCompra + producto.precio
-})
-alert('el total de la compra es : ' + totalCompra)
+
