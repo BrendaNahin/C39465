@@ -1,28 +1,60 @@
-const formulario = document.getElementById ('formulario')
-const inputnombre = document.getElementById ('nombre')
-const inputapellido = document.getElementById ('apellido')
-const titulo = document.getElementById ('titulo')
+const divProductos = document.getElementById ('productos')
+const botonFinalizarcompra =document.getElementById ('finalizarcompra')
 
 
-
-formulario.onsubmit = (e)=> {
-    e.preventDefault ()
-
-    const infoUsuario =  {
-    nombre:inputnombre.value,
-    apellido:inputapellido.value
+const fetchProducts = async()=>{
+    const productsApi = await fetch ('https://fakestoreapi.com/products')
+    const productsJSON = await productsApi.json()
+    return productsJSON
 }
 
-localStorage.setItem ('infoUsuario',JSON.stringify (infoUsuario))
-formulario.remove ()
-titulo.innerText = `Bienvenido ${infoUsuario.nombre} ${infoUsuario.apellido}`
+const fetchOneProduct = async(id)=> { 
+    const productApi = await fetch (`https://fakestoreapi.com/products${id} `)
+    const productJSON = await productApi.json()
+    return productJSON
 }
 
-const infoUsuario = localStorage.getItem ('infoUsuario')
-const infoUsuarioJS = JSON.parse(infoUsuario)
-if (infoUsuario) {
-    formulario.remove ()
-    titulo.innerText = `Bienvenido ${ infoUsuarioJS.nombre} ${ infoUsuarioJS.apellido}`
+const renderProducts = async()=>{
+    const products = await fetchProducts()
+    products.forEach((prod) => {
+        const {id, title, price, category, image} = prod
+        divProductos.innerHTML += `
+        <div class="card cardProducto">
+  <img src=${image} class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">${title}</h5>
+    <p class="card-text">${price} ${category}</p>
+    <button id=${id} onclick="addProduct (${id})" >AGREGAR</button> 
+  </div>
+</div>
+     `
+ }  )
 }
 
+renderProducts()
 
+const carrito = []
+
+const addProduct = async (id)=> {
+    const product = await fetchOneProduct (id)
+     const searchProductCarrito = carrito.find((prod) =>prod.id === product.id)
+     if (!searchProductCarrito) {
+        carrito.push({
+            id: product.id,
+            name: product.title,
+            quantity:1,
+            price: product.price,
+        })
+
+     } else {
+        searchProductCarrito.quantity++
+     }
+     console.log (carrito)
+}
+
+const messageAddProduct =  ()=> { 
+    Swal.fire ({
+        text: 'product added',
+        timer: 1000,
+    })
+}
